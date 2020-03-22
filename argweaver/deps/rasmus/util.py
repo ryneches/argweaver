@@ -31,6 +31,9 @@ from collections import defaultdict
 # representing infinity (possibly)
 INF = float("1e1000")
 
+# python 3 does not have cmp, so we'll define it here
+def cmp( a, b ) :
+    return ( a > b ) - ( a < b )
 
 class Bundle (dict):
     """
