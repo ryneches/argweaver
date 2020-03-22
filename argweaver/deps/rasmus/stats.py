@@ -697,7 +697,7 @@ def rhyper(m, n, M, N, report=0):
         return (r.phyper(m-1, M, N-M, n, lower_tail=False),
                 r.phyper(m, M, N-M, n))
     else:
-        raise "unknown option"
+        raise Exception( 'unknown option : ' + str(report) )
 
 
 def cdf(vals):

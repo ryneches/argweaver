@@ -482,7 +482,7 @@ class Table (list):
                                               for h in self.headers) + "\n")
 
         else:
-            raise "unknown directive:", line
+            raise Exeption( 'unknown directive :' + str(line) )
 
     #===================================================================
     # Table manipulation
