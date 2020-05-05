@@ -286,7 +286,7 @@ class ARG (object):
         NOTE: nodes are iterated in order of age
         """
         # initialize heap
-        heap = [(node.age, node) for node in self.leaves()]
+        heap = [ (node.age, i, node) for i,node in enumerate( self.leaves() ) ]
         seen = set([None])
         visited = set([])
         visit_age = min(x[0] for x in heap) - 1
@@ -321,16 +321,18 @@ class ARG (object):
 
         # add all ancestor of lineages
         unready = []
+        heapcounter = len(heap)
         while len(heap) > 0:
             # yield next ready node
             del unready[:]
             while True:
-                age, node = heapq.heappop(heap)
+                age, i, node = heapq.heappop(heap)
                 if ready(node):
                     break
                 unready.append((age, node))
             for x in unready:
-                heapq.heappush(heap, x)
+                heapq.heappush(heap, (x[0], x[1], heapcounter))
+                heapcounter = heapcounter + 1
             yield node
             visited.add(node)
             visit_age = node.age
@@ -342,7 +344,8 @@ class ARG (object):
             # add parent to lineages if it has not been seen before
             parent = self.get_local_parent(node, pos)
             if parent not in seen:
-                heapq.heappush(heap, (parent.age, parent))
+                heapq.heappush(heap, (parent.age, heapcounter, parent))
+                heapcounter = heapcounter + 1
                 seen.add(parent)
 
     def preorder_marginal_tree(self, pos, node=None):
